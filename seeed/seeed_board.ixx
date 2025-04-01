@@ -12,9 +12,6 @@ export module seeed_board;
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 
-#include "smbus.c"
-
-
 namespace relay {
     int file = -1;
     __u8 state = 0xFF;

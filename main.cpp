@@ -1,9 +1,21 @@
 #include <iostream>
+#include <yaml-cpp/yaml.h>
 
 import seeed_board;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    YAML::Node config;
+    try {
+        config = YAML::LoadFile("config.yaml");
+    } catch (YAML::BadFile& e) {
+        std::cerr << "Couldn't load file" << std::endl << e.what() << std::endl;
+        return -1;
+    }
 
-    relay::open_bus();
+    if (config.IsNull()) {
+        std::cerr << "Config file is empty" << std::endl;
+        return -1;
+    }
+
+
 }

@@ -10,14 +10,25 @@ set(PAHO_BUILD_STATIC CACHE BOOL TRUE "Build static library")
 set(PAHO_WITH_MQTT_C CACHE BOOL TRUE "Build Paho C from the internal GIT submodule.")
 
 add_subdirectory(paho)
+include_directories(paho/include)
 
-add_executable(mqtt_homeassistant_relay main.cpp)
-target_link_libraries(mqtt_homeassistant_relay PRIVATE paho-mqtt3a)
+add_executable(mqtt_homeassistant_relay main.cpp
+        mqtt_connection/mqtt_connection.h
+        mqtt_connection/mqtt_init.cpp
+        mqtt_connection/mqtt_init.h
+        config.cpp
+        config.h
+        config_exception.cpp
+)
+add_library(seeed seeed/seeed_board.ixx)
+
+target_link_libraries(seeed i2c)
+target_link_libraries(mqtt_homeassistant_relay PRIVATE paho-mqtt3a-static yaml-cpp seeed)
 
 target_sources(
-    mqtt_homeassistant_relay
+    seeed
     PUBLIC
     FILE_SET CXX_MODULES
         FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/seeed_board.ixx
+        seeed/seeed_board.ixx
 )

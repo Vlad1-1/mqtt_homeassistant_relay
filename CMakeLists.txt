@@ -20,7 +20,7 @@ add_executable(mqtt_homeassistant_relay main.cpp
         config.h
         config_exception.cpp
 )
-add_library(seeed seeed/seeed_board.ixx)
+add_library(seeed seeed/seeed_board.cpp)
 
 target_link_libraries(seeed i2c)
 target_link_libraries(mqtt_homeassistant_relay PRIVATE paho-mqtt3a-static yaml-cpp seeed)
@@ -30,5 +30,5 @@ target_sources(
     PUBLIC
     FILE_SET CXX_MODULES
         FILES
-        seeed/seeed_board.ixx
+        seeed/seeed_board.cpp
 )

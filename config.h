@@ -4,26 +4,28 @@
 
 #ifndef CONFIG_H
 #define CONFIG_H
-#include <exception>
+
+#ifndef RELAY_NUM
+#define RELAY_NUM 4
+#endif // RELAY_NUM
+
+#include <unordered_map>
 #include <yaml-cpp/node/node.h>
 
-struct config_exception final : std::exception {
-    enum class Reason {
-        CONFIG_OK,
-        CONFIG_NOT_FOUND,
-        CONFIG_ROOT_INVALID,
-        CONFIG_RELAY_MISFORMAT,
-        CONFIG_RELAY_NOT_FOUND,
-    } reason{};
+struct Config
+{
+    std::string mqtt_uri = "mqtt://localhost:1883";
+    std::string mqtt_user;
+    std::string mqtt_pass;
 
-    explicit config_exception(Reason reason);
+    std::unordered_map<std::string, int> relay_map;
 };
 
 /**
  * @brief Validates the configuration file.
- * @param config The configuration file to validate.
+ * @param config_node The yaml root node of the config file
  * @throws config_exception if the configuration is invalid.
  */
-auto validate_config(YAML::Node &config) -> void;
+auto parse_config(const YAML::Node& config_node) -> Config;
 
 #endif //CONFIG_H

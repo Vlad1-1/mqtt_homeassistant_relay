@@ -6,10 +6,9 @@
 
 #include <unordered_map>
 
-#include <yaml-cpp/node/node.h>
-#include <yaml-cpp/node/iterator.h>
+#include "yaml-cpp/yaml.h"
 
-auto parse_config(const YAML::Node& config_node)
+auto parse_config(const YAML::Node& config_node) -> Config
 {
     Config cfg;
 
@@ -22,18 +21,18 @@ auto parse_config(const YAML::Node& config_node)
     if (!relays.IsSequence())
         throw std::invalid_argument("relays is not a sequence");
 
-    for (const auto& relay : relays)
+    for (size_t i{}; i < relays.size(); ++i)
     {
-        if (!relay.IsMap())
+        if (!relays[i].IsMap())
             throw std::invalid_argument("Relay is not a map");
 
-        const auto& name = relay["name"];
-        const auto& pin = relay["pin"];
+        const auto& name = relays[i]["name"];
+        const auto& pin = relays[i]["pin"];
 
         if (!name.IsScalar() || !pin.IsScalar())
             throw std::invalid_argument("Relay name or pin is not a scalar");
 
-        const auto& pin_number = pin.as<int>();
+        int pin_number = pin.as<int>();
         if (pin_number < 0 || pin_number >= RELAY_NUM)
             throw std::invalid_argument("Relay pin number is out of range");
 

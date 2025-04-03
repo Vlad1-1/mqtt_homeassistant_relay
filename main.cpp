@@ -1,21 +1,12 @@
 #include <iostream>
-#include <yaml-cpp/yaml.h>
+#include "yaml-cpp/yaml.h"
 
-import seeed_board;
+#include "config.h"
 
 int main() {
-    YAML::Node config;
-    try {
-        config = YAML::LoadFile("config.yaml");
-    } catch (YAML::BadFile& e) {
-        std::cerr << "Couldn't load file" << std::endl << e.what() << std::endl;
-        return -1;
-    }
+    auto config_node = YAML::LoadFile("config.yaml");
 
-    if (config.IsNull()) {
-        std::cerr << "Config file is empty" << std::endl;
-        return -1;
-    }
+    auto config = parse_config(config_node);
 
-
+    std::cout << std::format("URI of the server: {}\n", config.mqtt_uri);
 }

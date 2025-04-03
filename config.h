@@ -10,7 +10,7 @@
 #endif // RELAY_NUM
 
 #include <unordered_map>
-#include <yaml-cpp/node/node.h>
+#include "yaml-cpp/node/node.h"
 
 struct Config
 {

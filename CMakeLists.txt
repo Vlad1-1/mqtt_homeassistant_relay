@@ -11,10 +11,6 @@ set(PAHO_WITH_MQTT_C CACHE BOOL TRUE "Build Paho C from the internal GIT submodu
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-# add_subdirectory(paho)
-# include_directories(paho/include)
-# include_directories(paho/externals/paho-mqtt-c/src)
-
 include(FetchContent)
 
 FetchContent_Declare(
@@ -31,18 +27,15 @@ FetchContent_MakeAvailable(PahoMqttCpp)
 #)
 #FetchContent_MakeAvailable(yaml-cpp)
 
-#add_subdirectory(yaml-cpp)
-#include_directories(yaml-cpp/include)
-
 find_package(yaml-cpp)
 
+include_directories(headers)
+
 add_executable(mqtt_homeassistant_relay
-        main.cpp
-        mqtt_connection/mqtt_connection.h
-        mqtt_connection/mqtt_init.cpp
-        mqtt_connection/mqtt_init.h
-        config.cpp
-        config.h
+        src/main.cpp
+        src/config.cpp
+
+        headers/config.h
 )
 add_library(seeed seeed/seeed_board.cpp seeed/smbus.c)
 

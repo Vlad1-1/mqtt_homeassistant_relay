@@ -30,10 +30,6 @@ namespace relay {
         }
         return set_address(i2c_address);
     }
-
-    auto write_state() -> __s32 {
-        return i2c_smbus_write_byte_data(file, 0x06, state);
-    }
 }
 
 export namespace relay {
@@ -62,33 +58,27 @@ export namespace relay {
      * Turns on the specified relay
      *
      * @param relay The relay number to turn on
-     * @return 0 on success, a negative number on failure
      */
-    auto turn_on(const unsigned char relay) -> int {
+    auto turn_on(const unsigned char relay) {
         state &= ~(1 << relay);
-        return write_state();
     }
 
     /**
      * Turns off the specified relay
      *
      * @param relay The relay number to turn off
-     * @return 0 on success, a negative number on failure
      */
-    auto turn_off(const unsigned char relay) -> int {
+    auto turn_off(const unsigned char relay) {
         state |= 1 << relay;
-        return write_state();
     }
 
     /**
      * Toggles the specified relay
      *
      * @param relay The relay number to toggle
-     * @return 0 on success, a negative number on failure
      */
-    auto toggle(const unsigned char relay) -> int {
+    auto toggle(const unsigned char relay) {
         state ^= 1 << relay;
-        return write_state();
     }
 
     /**
@@ -99,5 +89,9 @@ export namespace relay {
      */
     auto get_relay_state(const unsigned char relay) -> bool {
         return state >> relay & 1;
+    }
+
+    auto write_state() -> __s32 {
+        return i2c_smbus_write_byte_data(file, 0x06, state);
     }
 }

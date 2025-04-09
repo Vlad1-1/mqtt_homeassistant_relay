@@ -4,6 +4,7 @@
 
 #ifndef MQTT_H
 #define MQTT_H
+
 #include "config.h"
 #include "mqtt/async_client.h"
 

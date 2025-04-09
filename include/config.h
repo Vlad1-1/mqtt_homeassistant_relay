@@ -5,6 +5,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#pragma once
+
 #ifndef RELAY_NUM
 #define RELAY_NUM 4
 #endif // RELAY_NUM
